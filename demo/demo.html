@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Cally</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
+    <link rel="stylesheet" href="/res/demo.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+    <script src="/js/ajaxAntiForgery.min.js"></script>
+    <script src="/js/cally.js"></script>
+</head>
+<body>
+    <div class="container body-content">
+
+        <h2>Call on load</h2>
+        <p>
+            Use <code>data-event="ready"</code> to make a call as soon as the page is loaded.
+        </p>
+        <div class="ajax-container call-on-click"
+             data-url="/load-html"
+             data-event="ready"
+             data-mode="html">
+            <div class="contents"></div>
+        </div>
+
+        <h2>Call with non-blocking notifications</h2>
+        <p>
+            A notification list keeps the user informed on what's going on during the asynchronous call.
+            Use the <code>data-msg-loading</code> and <code>data-msg-done</code> attributes to show meaningful
+            messages in a non-blocking notification list.
+        </p>
+        <a href="javascript:void(0)" class="btn btn-default call-on-click"
+           data-url="/load-data">Click me</a>
+
+        <a href="javascript:void(0)" class="btn btn-danger call-on-click"
+           data-url="/throw">Throw</a>
+
+
+        <h2>Call with modal notifications</h2>
+        <p>
+            To prevent a user from interacting with the page while the call is in progress,
+            you can display notifications in a modal dialog.
+        </p>
+        <a href="javascript:void(0)" class="btn btn-default call-on-click"
+           data-url="/load-data"
+           data-mode="modal">Click me</a>
+
+        <a href="javascript:void(0)" class="btn btn-danger call-on-click"
+           data-url="/throw"
+           data-mode="modal">Throw</a>
+
+        <h2>Form submission</h2>
+        <p>
+            Any data from controls inside a &lt;form&gt; tag or inside an element marked with the <code>.ajax-container</code>
+            class is collected and sent to the server.
+        </p>
+        <div class="ajax-container">
+            <input type="text" name="text" />
+            <a href="javascript:void(0)"
+               class="call-on-click"
+               data-mode="html"
+               data-url="/form-submission">Click me</a>
+            <div class="contents"></div>
+        </div>
+
+
+        <h2>HTML injection</h2>
+        <p>Use <code>data-mode="html"</code> to inject HTML sent from the server inside an element.</p>
+        <p>
+            The server returns a JSON payload with a <code>Html</code> property that contains the HTML to inject.
+            The HTML is injected into the selector specified in the <code>data-contents</code> attribute.
+            Alternatively, assign the <code>.ajax-container</code> class to a container element and the <code>.contents</code>
+            class to the child element that will hold the HTML.
+        </p>
+        <div>
+            <a href="javascript:void(0)" class="btn btn-default call-on-click"
+               data-url="/load-html"
+               data-mode="html"
+               data-contents="#foo">Click me</a>
+
+            <div id="foo" class="contents"></div>
+        </div>
+
+        <div class="ajax-container">
+            <a href="javascript:void(0)" class="btn btn-danger call-on-click"
+               data-url="/throw"
+               data-mode="html">Throw</a>
+
+            <div id="foo" class="contents"></div>
+        </div>
+
+        <h3>Caller replacement</h3>
+        <p>
+            Use <code>data-mode="html-replace"</code> to replace the element that triggered the call
+            with the HTML received from the server.
+        </p>
+        <div class="ajax-container">
+            <a href="javascript:void(0)" class="call-on-click"
+               data-url="/load-html"
+               data-mode="html-replace">Click me</a>
+        </div>
+        <div class="ajax-container">
+            <a href="javascript:void(0)" class="call-on-click"
+               data-url="/throw"
+               data-mode="html-replace">Throw</a>
+        </div>
+
+        <h3>Inside a collapsible</h3>
+        <p>
+            To load HTML inside a collapsible panel, add the <code>data-event="show.bs.collapse"</code> to the
+            collapsible <code>div</code>.
+            To load the HTML once - and thus prevent it from being reloaded every time the panel is expanded - add
+            the <code>data-once</code> attribute.
+        </p>
+        <div class="panel panel-default ajax-container">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        Collapsible Group Item #1
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse call-on-click"
+                 data-url="/load-html" data-mode="html" data-event="show.bs.collapse" data-once>
+                <div class="panel-body contents">
+                </div>
+            </div>
+        </div>
+
+        <h3>Recursive</h3>
+        <p>
+            The injected HTML itself can contain elements that trigger asynchronous calls.
+        </p>
+        <div class="ajax-container">
+            <a href="javascript:void(0)" class="call-on-click"
+               data-url="/recursive" data-mode="html">Click me</a>
+            <div class="contents"></div>
+        </div>
+
+        <footer style="padding:200px 0 100px 0;text-align: center">
+            &copy; NeoSystem
+        </footer>
+    </div>
+</body>
+</html>

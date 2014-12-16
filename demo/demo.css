@@ -1,0 +1,8 @@
+﻿.contents {
+    margin: 10px 0 10px 0;
+}
+
+.load-indicator {
+    height: 32px;
+    background: url(/res/images/ajax-loader.gif) no-repeat;
+}
